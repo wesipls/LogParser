@@ -11,6 +11,12 @@ BEGIN {
 
 {
     if ($0 ~ err_match && !a[$(NF?NF-1:NF)]++) {
-      print $0
+      a[$(NF?NF-1:NF)] = $0
+    }
+}
+
+END {
+    for (i in a) {
+        print a[i]
     }
 }
