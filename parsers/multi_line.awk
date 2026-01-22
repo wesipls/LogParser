@@ -21,6 +21,12 @@ $0 ~ end {
 }
 
 flag && !a[$(NF?NF-1:NF)]++ {
-    print $0
+    b[++c] = $0
+}
+
+END {
+    for (i = 1; i <= c; i++) {
+        print b[i]
+    }
 }
 
