@@ -14,7 +14,7 @@
 # maybe everything has crashed
 # ==================================================
 #
-# This script would print everything between the equal signs.
+# This script ran as: ./multi_line.awk -v start="ERROR" -v end="===" logfile would print everything between the equal signs.
 #
 # If you have any other examples not covered by this script, please open an issue on GitHub.
 
