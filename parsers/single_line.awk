@@ -10,12 +10,21 @@
 
 BEGIN {
     if (!(err1 != "")) {
-        exit
+        err1 = "^$";
+    }
+    if (!(err2 != "")) {
+        err2 = "^$";
+    }
+    if (!(err3 != "")) {
+        err3 = "^$";
+    }
+    if (!(err4 != "")) {
+        err4 = "^$";
     }
 }
 
 {
-    if (($0 ~ err1 || $0 ~ err2) && !a[$(NF?NF-1:NF)]++) {
+    if (($0 ~ err1 || $0 ~ err2 || $0 ~ err3 || $0 ~ err4) && !a[$(NF?NF-1:NF)]++) {
       a[$(NF?NF-1:NF)] = $0
       b[sort++] = $(NF?NF-1:NF)
     }
