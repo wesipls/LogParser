@@ -3,7 +3,7 @@
 # Usage ./single_line.awk -v err1="your_regex_here" -v err2="other_regex_here" input_file
 # Support up to 4 regex patterns
 
-# Matches each line of $err_match and prints only if it has not already been printed once.
+# Matches each line of $err[NUM] and prints only if it has not already been printed once.
 # Uses the last or second to last field as unique identifier to check if the line has already been printed.
 
 # a = array for storing lines matching unique identifiers
