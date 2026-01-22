@@ -28,7 +28,7 @@ BEGIN {
 {
     if ($0 ~ err1 || $0 ~ err2 || $0 ~ err3 || $0 ~ err4) {
         id = $0
-        if (!(id in a)) {
+        if (!a[$(NF ? NF-1 : NF)]++) {
             a[id] = $0
             b[sort++] = id
         }
