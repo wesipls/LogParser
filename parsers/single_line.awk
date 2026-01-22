@@ -9,16 +9,16 @@
 # b = array for storing order of unique identifiers
 
 BEGIN {
-    if (!(err1 != "")) {
+    if (!err1) {
         err1 = "^$";
     }
-    if (!(err2 != "")) {
+    if (!err2) {
         err2 = "^$";
     }
-    if (!(err3 != "")) {
+    if (!err3) {
         err3 = "^$";
     }
-    if (!(err4 != "")) {
+    if (!err4) {
         err4 = "^$";
     }
 }
