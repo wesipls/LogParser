@@ -1,8 +1,9 @@
 #!/usr/bin/awk -f
 
-# Usage: ./multi_line.awk -v start="START_PATTERN" -v end="END_PATTERN" input_file
+# Usage: ./multi_line.awk -v start="START_PATTERN" -v end="END_PATTERN"  -v output_file="output.txt" input_file
 # Also supports optional start2 and start3 patterns if you need more regex matches.
 # To enable case insensitive matching, pass ignore_case="yes" as a variable.
+# To print to stdout, skip passing a output_file.
 #
 # Prints everything between lines matching START_PATTERN and END_PATTERN.
 # Checking for duplicates based on the second to last field (or last field if only one field exists).
@@ -34,6 +35,11 @@ BEGIN {
     }
     if (ignore_case == "yes") {
       IGNORECASE = 1;
+    }
+    if (output_file) {
+        output_stream = output_file
+    } else {
+        output_stream = "/dev/stdout"
     }
 }
 
