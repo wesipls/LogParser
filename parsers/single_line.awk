@@ -1,11 +1,11 @@
 #!/usr/bin/awk -f
 
-# Usage ./single_line.awk -v err1="your_regex_here" -v err2="other_regex_here" -v output_file="output.txt" input_file
+# Usage ./single_line.awk -v error_match_1="your_regex_here" -v error_match_2="other_regex_here" -v output_file="output.txt" input_file
 # Support up to 4 regex patterns
 # To enable case insensitive matching, pass ignore_case="yes" as a variable.
 # To print to stdout, skip passing a output_file.
 #
-# Matches each line of $err[NUM] and prints only if it has not already been printed once.
+# Matches each line of $error_match_[NUM] and prints only if it has not already been printed once.
 # Uses the last or second to last field as unique identifier to check if the line has already been printed.
 #
 # Making BEGIN a loop is for some reason way harder than i expected
@@ -13,17 +13,17 @@
 # Sticking to simple if statments here
 
 BEGIN {
-    if (!err1) {
-        err1 = "^$";
+    if (!error_match_1) {
+        error_match_1 = "^$";
     }
-    if (!err2) {
-        err2 = "^$";
+    if (!error_match_2) {
+        error_match_2 = "^$";
     }
-    if (!err3) {
-        err3 = "^$";
+    if (!error_match_3) {
+        error_match_3 = "^$";
     }
-    if (!err4) {
-        err4 = "^$";
+    if (!error_match_4) {
+        error_match_4 = "^$";
     }
     if (ignore_case == "yes") {
       IGNORECASE = 1;
@@ -36,17 +36,17 @@ BEGIN {
 }
 
 {
-    if ($0 ~ err1 || $0 ~ err2 || $0 ~ err3 || $0 ~ err4) {
+    if ($0 ~ error_match_1 || $0 ~ error_match_2 || $0 ~ error_match_3 || $0 ~ error_match_4) {
         id = $0
-        if (!a[$(NF ? NF-1 : NF)]++) {
-            a[id] = $0
-            b[sort++] = id
+        if (!line_check[$(NF ? NF-(control_character ? control_character : 1) : NF)]++) {
+            line_check[id] = $0
+            sorter[sort++] = id
         }
     }
 }
 
 END {
     for (i = 0; i < sort; i++) {
-        print a[b[i]]
+        print line_check[sorter[i]]
     }
 }
