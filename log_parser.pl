@@ -5,9 +5,6 @@ use warnings;
 
 my %config;
 my $config_file = 'parser.conf';
-if (!-e $config_file) {
-    $config_file = 'example_parser.conf';
-}
 
 open(my $fh, '<', $config_file) or die "Could not open file '$config_file' $!";
 while (my $line = <$fh>) {
