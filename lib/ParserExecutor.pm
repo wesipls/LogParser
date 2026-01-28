@@ -15,6 +15,7 @@ sub execute_parser {
     my $args = join(' ', map { "-v $_=\"$config->{$_}\"" } grep { $_ ne 'mode' } keys %{$config});
     $args .= " $file_path";
 
+    print "\n=== Parsing file: $file_path ===\n";
     if ($mode eq 'single_line') {
         system("perl parsers/single_line.awk $args");
     } elsif ($mode eq 'multi_line') {
