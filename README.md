@@ -5,7 +5,8 @@ Main reason for creating this was to remove duplicate entries when working with 
 ## Usage
 Check the configuration file and modify it to your needs.  
 Run the script as follows:  
-`./LogParser.pl --file (file or direcotry to parse) [--config (config file, default: LogParser.conf)]`  
+`./LogParser.pl --file (file or direcotry to parse) [--config (config file, default: parser.conf)]`  
+If no config file is provided the script will use parser.conf in the current directory.
 The output will be redirected to stdout.  
 
 For now there are sill some features that have not been implemented, but they can easily be replaced with bash.  
