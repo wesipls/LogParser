@@ -1,4 +1,4 @@
-# log_parser
+# LogParser
 A Small collection of scripts to parse log files.  
   
 Main reason for creating this was to remove duplicate entries when working with log files, notably when using log errors in monitoring software alerts.
