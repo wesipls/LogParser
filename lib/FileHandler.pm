@@ -1,4 +1,6 @@
-# Script for handling files if LogParser.pl target is a directory.
+# FileHandler.pm
+# Handles operations related to file management when LogParser.pl is processing a directory.
+# Includes functions for retrieving all files within a directory excluding hidden files.
 
 package FileHandler;
 

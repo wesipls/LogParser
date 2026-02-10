@@ -1,4 +1,6 @@
-# Parses configuration file and return key-value pairs as a hash.
+# ConfigLoader.pm
+# Loads and parses the configuration file used by LogParser.pl.
+# Extracts key-value pairs and ignores comments or empty lines.
 
 package ConfigLoader;
 

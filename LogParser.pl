@@ -1,9 +1,8 @@
 #!/usr/bin/perl
 
 # LogParser.pl
-# A script to analyze and parse log files with support for directories or single files.
-# The parsing behavior can be configured using a configuration file.
-# Utilizes external awk parsers for parsing logic.
+# A Perl script for analyzing and processing log files. Can parse single files or all files within a directory as specified.
+# Leverages configuration files for dynamic behavior and external awk parsers for parsing logic.
 
 use strict;
 use warnings;

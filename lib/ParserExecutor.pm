@@ -1,4 +1,6 @@
-# Scriptr for executing the awk parsers, the awk scripts can be found in ../parsers/ directory.
+# ParserExecutor.pm
+# Executes awk parsers for processing logs based on the specified mode ('single_line' or 'multi_line').
+# Handles dynamic arguments based on the provided configuration and validates execution success.
 
 package ParserExecutor;
 
@@ -17,7 +19,7 @@ sub execute_parser {
 
     print "\n=== Start of file: $file_path ===\n";
     if ($mode eq 'single_line') {
-        system("perl parsers/single_line.awk $args");
+        system("perl parsers/single_line.awk $args") == 0 or die "Failed to execute single_line parser on $file_path: $!\n";
     } elsif ($mode eq 'multi_line') {
         system("perl parsers/multi_line.awk $args");
     }
