@@ -16,7 +16,8 @@ sub get_files_in_directory {
 
     while (my $file = readdir($dh)) {
         next if $file =~ /^\./;
-        my $full_path = "$directory/$file";
+        use File::Spec;
+        my $full_path = File::Spec->catfile($directory, $file);
         push @files, $full_path if -f $full_path;
     }
 
