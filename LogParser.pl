@@ -1,33 +1,40 @@
 #!/usr/bin/perl
 
 # LogParser.pl
-# A Perl script for analyzing and processing log files. Can parse single files or all files within a directory as specified.
-# Leverages configuration files for dynamic behavior and external awk parsers for parsing logic.
+# A Perl script for analyzing and processing log files. This script parses single files or entire directories containing logs.
+# Utilizes configuration files to allow dynamic behavior and external awk parsers for log processing logic.
 
 use strict;
 use warnings;
-use Getopt::Long;
+use Getopt::Long qw(GetOptions);
 use lib 'lib';
 use ConfigLoader;
 use FileHandler;
 use ParserExecutor;
 
-# Main entry point
+# Main entry point of the script
 sub main {
-    my ($file_to_parse, $config_file) = parse_arguments();
+
+    # Parse command-line arguments
+    my ( $file_to_parse, $config_file ) = parse_arguments();
 
     # Load configuration file
-    my %config = ConfigLoader::load_config($config_file);
+    my %config = eval { ConfigLoader::load_config($config_file) }
+      or die "Failed to load configuration: $@\n";
 
-    # Determine if the target is a directory or a file
-    if (-d $file_to_parse) {
-        process_directory($file_to_parse, \%config);
-    } else {
-        process_file($file_to_parse, \%config);
+    # Determine input type and process files accordingly
+    if ( -d $file_to_parse ) {
+        process_directory( $file_to_parse, \%config );
+    }
+    elsif ( -f $file_to_parse ) {
+        process_file( $file_to_parse, \%config );
+    }
+    else {
+        die "Error: '$file_to_parse' is neither a file nor a directory.\n";
     }
 }
 
-# Parse command-line arguments
+# Parse and validate command-line arguments
 sub parse_arguments {
     my $config_file = 'parser.conf';
     my $file_to_parse;
@@ -35,35 +42,43 @@ sub parse_arguments {
     GetOptions(
         "file=s"   => \$file_to_parse,
         "config=s" => \$config_file
-    ) or die("Error in command line arguments\n");
+    ) or die "Usage: $0 --file=<file|directory> [--config=<config_file>]\n";
 
-    die("Error: --file argument is required\n") unless $file_to_parse;
+    die
+"Error: Missing --file argument. Use --file=<file|directory> to specify the target.\n"
+      unless $file_to_parse;
 
-    return ($file_to_parse, $config_file);
+    return ( $file_to_parse, $config_file );
 }
 
-# Process a directory of files
+# Process all files within a specified directory
 sub process_directory {
-    my ($directory, $config) = @_;
+    my ( $directory, $config ) = @_;
 
-    my @files = FileHandler::get_files_in_directory($directory);
+    my @files = eval { FileHandler::get_files_in_directory($directory) }
+      or die "Failed to read directory '$directory': $@\n";
 
-    # Process each file in the directory
-    foreach my $file (@files) {
-        process_file($file, $config);
+    for my $file (@files) {
+        process_file( $file, $config );
     }
 }
 
-# Process a single file
+# Process a single log file
 sub process_file {
-    my ($file, $config) = @_;
+    my ( $file, $config ) = @_;
 
-    die("Error: File not found: $file\n") unless -f $file;
+    unless ( -f $file ) {
+        warn
+          "File '$file' does not exist or is not a regular file. Skipping...\n";
+        return;
+    }
 
-    my $mode = $config->{"mode"} // die("Error: 'mode' not defined in config file\n");
+    my $mode = $config->{"mode"}
+      or die "Error: 'mode' not defined in configuration file.\n";
 
-    ParserExecutor::execute_parser($mode, $config, $file);
+    eval { ParserExecutor::execute_parser( $mode, $config, $file ); }
+      or warn "Failed to process file '$file': $@\n";
 }
 
-# Run the main script
+# Execute the main function
 main();
